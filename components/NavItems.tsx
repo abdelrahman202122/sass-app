@@ -2,7 +2,6 @@
 
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import path from 'path';
 
 const navItems = [
   { label: 'Home', href: '/' },
