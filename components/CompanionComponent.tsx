@@ -1,6 +1,7 @@
 'use client';
 
 import soundwaves from '@/constants/soundwaves.json';
+import { addToSessionHistory } from '@/lib/actions/companion.action';
 import { cn, configureAssistant, getSubjectColor } from '@/lib/utils';
 import { vapi } from '@/lib/vapi.sdk';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -14,6 +15,7 @@ enum CallStatus {
   FINISHED = 'FINISHED',
 }
 const CompanionComponent = ({
+  companionId,
   subject,
   topic,
   name,
@@ -42,7 +44,10 @@ const CompanionComponent = ({
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
 
-    const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+    const onCallEnd = () => {
+      setCallStatus(CallStatus.FINISHED);
+      addToSessionHistory(companionId);
+    };
 
     const onMessage = (message: Message) => {
       if (message.type === 'transcript' && message.transcriptType === 'final') {
